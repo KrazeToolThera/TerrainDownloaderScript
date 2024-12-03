@@ -1,5 +1,6 @@
 _G.String=''
 
+local HTTPSERVICE=game:GetService("HttpService")
 local terrain = workspace.Terrain
 
 local function from_base64(data)
@@ -18,8 +19,9 @@ local function from_base64(data)
 	end))
 end
 
-for _, tData in pairs(game:GetService("HttpService"):JSONDecode(from_base64(_G.String))) do
+HTTPSERVICE.HttpEnabled=true
+for _, tData in pairs(HTTPSERVICE:JSONDecode(from_base64(_G.String))) do
 	local x, y, z, voxelType,voxelFill,voxelOrientation=unpack(string.split(tData,'.'))
-
 	terrain:SetCell(x, y, z, Enum.CellMaterial[voxelType],Enum.CellBlock[voxelFill],Enum.CellOrientation[voxelOrientation])
 end
+HTTPSERVICE.HttpEnabled=false
